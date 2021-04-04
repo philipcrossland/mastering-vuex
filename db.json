@@ -231,6 +231,42 @@
       "date": "",
       "time": "5:00",
       "attendees": []
+    },
+    {
+      "id": 2947894,
+      "user": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "category": "nature",
+      "organizer": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "title": "Test",
+      "description": "Test",
+      "location": "Test",
+      "date": "",
+      "time": "",
+      "attendees": []
+    },
+    {
+      "id": 2663566,
+      "user": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "category": "animal welfare",
+      "organizer": {
+        "id": "abc123",
+        "name": "Adam"
+      },
+      "title": "This is a test",
+      "description": "Some descriptive text",
+      "location": "Here",
+      "date": "2021-04-07T12:49:00.000Z",
+      "time": "18:00",
+      "attendees": []
     }
   ]
 }
