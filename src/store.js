@@ -16,17 +16,22 @@ export default new Vuex.Store({
       'food',
       'community'
     ],
-    todos: [
-      { id: 1, text: '...', done: true },
-      { id: 2, text: '...', done: false },
-      { id: 1, text: '...', done: true },
-      { id: 3, text: '...', done: false }
-    ],
-    events: []
+    events: [],
+    totalPageCount: 0,
+    event: {}
   },
   mutations: {
     ADD_EVENT(state, event) {
       state.events.push(event)
+    },
+    SET_EVENTS(state, events) {
+      state.events = events
+    },
+    SET_PAGE_COUNT(state, pageCount) {
+      state.totalPageCount = pageCount
+    },
+    SET_EVENT(state, event) {
+      state.event = event
     }
   },
   actions: {
@@ -34,12 +39,37 @@ export default new Vuex.Store({
       EventService.postEvent(event).then(() => {
         commit('ADD_EVENT', event)
       })
+    },
+    fetchEvents({ commit }, { perPage, page }) {
+      EventService.getEvents(perPage, page)
+        .then(response => {
+          let totalCount = parseInt(response.headers['x-total-count']) || 0
+          let pageCount = Math.ceil(totalCount / perPage)
+
+          commit('SET_EVENTS', response.data)
+          commit('SET_PAGE_COUNT', pageCount)
+        })
+        .catch(error => {
+          console.log('There was an error:', error.response)
+        })
+    },
+    fetchEvent({ commit, getters }, id) {
+      var event = getters.getEventById(id)
+
+      if (event) {
+        commit('SET_EVENT', event)
+      } else {
+        EventService.getEvent(id)
+          .then(response => {
+            commit('SET_EVENT', response.data)
+          })
+          .catch(error => {
+            console.log('There was an error:', error.response)
+          })
+      }
     }
   },
   getters: {
-    catLength: state => state.categories.length,
-    doneTodos: state => state.todos.filter(todo => todo.done),
-    activeTodosCount: state => state.todos.filter(todo => !todo.done).length,
     getEventById: state => id => {
       return state.events.find(event => event.id === id)
     }
